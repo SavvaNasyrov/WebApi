@@ -1,4 +1,5 @@
 ﻿using PostsNamespace;
+using WebApi.Models;
 
 namespace WebApi.Controllers
 {
@@ -18,25 +19,19 @@ namespace WebApi.Controllers
             return Task.FromResult(0);
         }
 
-        public static async Task<Dictionary<char, int>[]> CollectOccurrences(VKUsersPosts posts)
+        public static async Task<OccurrencesData> CollectOccurrences(VKUsersPosts posts)
         {
             await WriteStartLog();
 
-            Dictionary<char, int>[] result = {
-                new Dictionary<char, int>(33),
-                new Dictionary<char, int>(33),
-                new Dictionary<char, int>(33),
-                new Dictionary<char, int>(33),
-                new Dictionary<char, int>(33)
-            };
+            OccurrencesData result = new();
 
             for (int j = 0; j < 5; j++)
             {
                 for (int i = 0; i < 32; i++)
                 {
-                    result[j].Add((char)(1072 + i), 0);
+                    result.Data[j].Add((char)(1072 + i), 0);
                 }
-                result[j].Add('ё', 0);
+                result.Data[j].Add('ё', 0);
             }
 
             for (int j = 0; j < 5; j++)
@@ -44,7 +39,7 @@ namespace WebApi.Controllers
                 string text = posts.response.items[j].text;
                 RemoveSalt( ref text ); 
 
-                FindOccurrences(ref result[j], text );
+                FindOccurrences(ref result.Data[j], text );
             }
 
             await WriteEndLog();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PostsNamespace;
+using WebApi.Models;
 
 namespace WebApi.Controllers
 {
@@ -11,9 +12,16 @@ namespace WebApi.Controllers
             GetterData getter = new GetterData();
             VKUsersPosts posts = await getter.GetLast5Posts("738489146");
 
-            Dictionary<char, int>[] dicts = await OccurrenceСounter.CollectOccurrences(posts);
+            OccurrencesData dicts = await OccurrenceСounter.CollectOccurrences(posts);
 
-            return Ok(dicts[index]);
+            try
+            {
+                return Ok(dicts.Data[index]);
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
     }
 }

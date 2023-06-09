@@ -13,6 +13,5 @@ namespace PostsNamespace
     [JsonSourceGenerationOptions(WriteIndented = true)]
     public partial class SerContext : JsonSerializerContext
     {
-
     }
 }
