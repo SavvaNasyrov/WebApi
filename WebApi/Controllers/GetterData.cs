@@ -11,11 +11,11 @@ namespace WebApi.Controllers
         public GetterData()
         {
             client = new HttpClient();
-            ACSESS_TOKEN = File.ReadAllText("ACSESS_TOKEN.txt");
+            ACSESS_TOKEN = File.ReadAllText("bin\\Debug\\net7.0\\ACSESS_TOKEN.txt");
             Version = "5.131";
         }
 
-        async Task<PostsNamespace.VKUsersPosts> GetLast5Posts(string ID)
+        public async Task<PostsNamespace.VKUsersPosts> GetLast5Posts(string ID)
         {
             string? result = "";
 

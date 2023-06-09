@@ -1,0 +1,3 @@
+
+Started occurrence counting: 08.06.2023 02:40:32:196 
+Ended occurrence counting: 08.06.2023 02:40:32:202 
