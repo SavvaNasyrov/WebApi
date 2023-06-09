@@ -25,7 +25,7 @@ namespace WebApi.Controllers
                 result = await response.Content.ReadAsStringAsync();
             }
 
-            PostsNamespace.VKUsersPosts? posts = JsonSerializer.Deserialize<PostsNamespace.VKUsersPosts>(result, PostsNamespace.SerContext.Default.VKUsersPosts);
+            PostsNamespace.VKUsersPosts? posts = JsonSerializer.Deserialize<PostsNamespace.VKUsersPosts>(result);
 
             return posts;
         }

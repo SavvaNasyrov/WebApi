@@ -29,9 +29,9 @@ namespace WebApi.Controllers
             {
                 for (int i = 0; i < 32; i++)
                 {
+                    if (i == 6) result.Data[j].Add('ё', 0);
                     result.Data[j].Add((char)(1072 + i), 0);
                 }
-                result.Data[j].Add('ё', 0);
             }
 
             for (int j = 0; j < 5; j++)
