@@ -1,4 +1,6 @@
-﻿using PostsNamespace;
+﻿using Microsoft.EntityFrameworkCore;
+using PostsNamespace;
+using WebApi.Data;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -42,9 +44,20 @@ namespace WebApi.Controllers
                 FindOccurrences(ref result.Data[j], text );
             }
 
+
             await WriteEndLog();
 
             result.UpdateJsonString();
+
+            ContextFactory fact = new();
+
+            WebApiContext context = fact.CreateDbContext(null);
+
+            await context.Database.MigrateAsync();
+
+            await context.OccurrencesData.AddAsync(result);
+
+            await context.SaveChangesAsync();
 
             return result;
         }

@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
 namespace WebApi.Models
 {
     public class OccurrencesData
     {
+        [Key]
+        [Required]
         public string OwnerID { get; set; }
         public OccurrencesData(string ownerID)
         {
