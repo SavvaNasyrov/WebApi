@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         {
             await WriteStartLog();
 
-            OccurrencesData result = new();
+            OccurrencesData result = new(posts.response.items[0].owner_id.ToString());
 
             for (int j = 0; j < 5; j++)
             {
@@ -43,6 +43,8 @@ namespace WebApi.Controllers
             }
 
             await WriteEndLog();
+
+            result.UpdateJsonString();
 
             return result;
         }
