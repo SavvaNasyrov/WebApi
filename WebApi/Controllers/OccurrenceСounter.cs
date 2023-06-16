@@ -5,23 +5,30 @@ using WebApi.Models;
 
 namespace WebApi.Controllers
 {
-    public static class OccurrenceСounter
+    public class OccurrenceСounter
     {
-        public static string LogPath { get; set; } = "ResCounterLog.txt";
+        public string LogPath { get; set; } = "ResCounterLog.txt";
 
-        private static async Task<Task> WriteStartLog()
+        private readonly WriteToDBService writeToDB;
+
+        public OccurrenceСounter(WriteToDBService writeToDB)
+        {
+            this.writeToDB = writeToDB;
+        }
+
+        private async Task<Task> WriteStartLog()
         {
             await File.AppendAllTextAsync(LogPath, $"Started occurrence counting: {DateTime.Now.ToString("dd.MM.yyyy hh:mm:ss:fff")} \n");
             return Task.FromResult(0);
         }
 
-        private static async Task<Task> WriteEndLog()
+        private async Task<Task> WriteEndLog()
         {
             await File.AppendAllTextAsync(LogPath, $"Ended occurrence counting: {DateTime.Now.ToString("dd.MM.yyyy hh:mm:ss:fff")} \n");
             return Task.FromResult(0);
         }
 
-        public static async Task<OccurrencesData> CollectOccurrences(VKUsersPosts posts)
+        public async Task<OccurrencesData> CollectOccurrences(VKUsersPosts posts)
         {
             await WriteStartLog();
 
@@ -49,20 +56,12 @@ namespace WebApi.Controllers
 
             result.UpdateJsonString();
 
-            ContextFactory fact = new();
-
-            WebApiContext context = fact.CreateDbContext(null);
-
-            await context.Database.MigrateAsync();
-
-            await context.OccurrencesData.AddAsync(result);
-
-            await context.SaveChangesAsync();
+            writeToDB.WriteOccurrencesData(result);
 
             return result;
         }
 
-        private static void FindOccurrences(ref Dictionary<char, int> dict, string text)
+        private void FindOccurrences(ref Dictionary<char, int> dict, string text)
         {
             foreach (var ch in text)
             {
@@ -73,7 +72,7 @@ namespace WebApi.Controllers
             }
         }
 
-        private static void RemoveSalt(ref string text)
+        private void RemoveSalt(ref string text)
         {
             string result = new string(text.Where(t => char.IsLetter(t)).ToArray());
             result.ToLower();

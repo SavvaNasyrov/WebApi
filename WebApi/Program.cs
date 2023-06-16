@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebApi.Controllers;
 using WebApi.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<WebApiContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiContext") ?? throw new InvalidOperationException("Connection string 'WebApiContext' not found.")));
 
+builder.Services.AddScoped<IWriteToDBService, WriteToDBService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

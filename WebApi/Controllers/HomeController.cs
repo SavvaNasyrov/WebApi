@@ -33,6 +33,8 @@ namespace WebApi.Controllers
             GetterData getter = new GetterData();
             VKUsersPosts posts = await getter.GetLast5Posts("738489146");
 
+            OccurrenceСounter сounter = new (new())
+
             OccurrencesData dicts = await OccurrenceСounter.CollectOccurrences(posts);
 
             try
