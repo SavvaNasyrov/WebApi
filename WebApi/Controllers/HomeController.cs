@@ -49,9 +49,9 @@ namespace WebApi.Controllers
             {
                 return Ok("ok");
             }
-            catch (Exception ex) 
+            catch 
             {
-                return BadRequest(ex);
+                return BadRequest();
             }
 
             
