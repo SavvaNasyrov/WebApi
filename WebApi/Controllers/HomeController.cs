@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PostsNamespace;
 using System.Text.Json;
+using WebApi.Data;
 using WebApi.Models;
 
 namespace WebApi.Controllers
 {
     public class HomeController : Controller
     {
+        private WebApiContext webApiContext;
         /*
         [HttpGet("{index}")]
         public async Task< IActionResult> Get(int index)
@@ -27,24 +29,32 @@ namespace WebApi.Controllers
         }
         */
 
-        [HttpGet("{ind}")]
-        public async Task< IActionResult> JsonString(int ind) 
+        public HomeController(WebApiContext webApiContext)
+        {
+            this.webApiContext = webApiContext;
+        }
+
+
+        [HttpGet("{owner_id}")]
+        public async Task< IActionResult> JsonString(string owner_id) 
         {
             GetterData getter = new GetterData();
-            VKUsersPosts posts = await getter.GetLast5Posts("738489146");
+            VKUsersPosts posts = await getter.GetLast5Posts(owner_id);
 
-            OccurrenceСounter сounter = new (new())
+            OccurrenceСounter сounter = new(new(webApiContext));
 
-            OccurrencesData dicts = await OccurrenceСounter.CollectOccurrences(posts);
+            OccurrencesData dicts = await сounter.CollectOccurrences(posts);
 
             try
             {
-                return Ok( JsonSerializer.Deserialize(dicts.JsonString, typeof(Dictionary<char, int>[])));
+                return Ok("ok");
             }
-            catch
+            catch (Exception ex) 
             {
-                return NotFound();
+                return BadRequest(ex);
             }
+
+            
         }
     }
 }
