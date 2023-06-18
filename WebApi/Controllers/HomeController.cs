@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("{owner_id}")]
+        [HttpPost("{owner_id}")]
         public async Task< IActionResult> JsonString(string owner_id) 
         {
 
